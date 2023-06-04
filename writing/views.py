@@ -93,6 +93,14 @@ class PostListCreateView(ListCreateAPIView):
         sentence_id = self.kwargs.get("sentence_id")
         if self.request.user.is_authenticated:
             user = self.request.user
+            today = datetime.now().date()
+            print(user)
+            if not Post.objects.filter(user_id = user.id,
+                                    created_at__year=today.year,
+                                    created_at__month=today.month,
+                                    created_at__day=today.day,).exists():
+                user.continuous_cnt += 1
+                user.save(update_fields=['continuous_cnt'])
             serializer.save(user=user, sentence_id=sentence_id)
         else:
             user = None
