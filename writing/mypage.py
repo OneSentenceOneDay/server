@@ -86,30 +86,17 @@ class MypageUserDetailView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
-        posts = Post.objects.filter(user_id = user.id).order_by('-created_at')
+        posts = Post.objects.filter(user_id = user.id)
         post_num = posts.count()
-        today = datetime.now().date()
-        today_study_bool = False
-        continuous_cnt = 0
-        prev_date = datetime.now().date()
-
-        for post in posts:
-            if post.created_at.date() == today:
-                today_study_bool = True
-            if post.created_at.date() == prev_date:
-                continue
-            if (prev_date - post.created_at.date()).days > 1:
-                break
-            continuous_cnt += 1
-            prev_date = post.created_at.date()
-        if today_study_bool:
-            continuous_cnt += 1
-
+        continuous_cnt = user.continuous_cnt
+       
+        upper_users = list(User.objects.filter(continuous_cnt__gt=user.continuous_cnt).values_list('id'))
+        continuous_ranking = len(upper_users) + 1
         data = {
             "post_num" : post_num,
             "continuous_cnt": continuous_cnt,
             "liked_num": user.liked_num,
-            "today_study_bool": today_study_bool,
+            "continuous_ranking": continuous_ranking
         }
         return Response(data)
 

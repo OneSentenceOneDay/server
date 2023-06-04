@@ -4,6 +4,9 @@ from rest_framework import generics
 from .models import User
 from writing.models import Post
 from .serializers import UserDetailSerializer
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
 
 class UserRankingView(generics.ListAPIView):
     serializer_class = UserDetailSerializer
@@ -21,7 +24,11 @@ class UserRankingView(generics.ListAPIView):
         # ID 목록에 해당하는 사용자 객체 반환
         return User.objects.filter(id__in=user_ids)
     
-
+class ContinuousRankingView(APIView):
+    def get(self, request, *args, **kwargs):
+        top_users = User.objects.order_by('-continuous_cnt')[:3].values_list('nickname', flat=True)
+        return Response({'ranking': list(top_users)}, status=status.HTTP_200_OK)
+    
 
 
 
