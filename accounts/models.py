@@ -11,6 +11,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=512, null=True)
     subscription = models.BooleanField(default=False, null=True)
     liked_num = models.IntegerField(default=0, null=True)
+    continuous_cnt = models.IntegerField(default=0)
     is_first = models.BooleanField(default=True, null=True)
 
 class Feedback(models.Model):

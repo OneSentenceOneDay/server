@@ -4,6 +4,8 @@ from .email import *
 from .ranking import *
 from .change import *
 from .feedback import FeedbackListCreateView
+from .continuous import *
+
 app_name = 'accounts'
 
 
@@ -18,4 +20,5 @@ urlpatterns = [
     path('change-nickname/', change_nickname, name='nickname'),
     path('ranking/', UserRankingView.as_view(), name='ranking'),
     path('feedback/', FeedbackListCreateView.as_view(), name='FeedbackListCreateView'),
+    path('continuous/', ContinuousView.as_view(), name='ContinuousView'),
 ]
