@@ -6,6 +6,12 @@ class AccountsConfig(AppConfig):
     name = 'accounts'
 
     def ready(self):
-        from .scheduler import MyScheduler
+        from .scheduler import MyScheduler, CountinuousScheduler
         scheduler = MyScheduler()
         scheduler.scheduler.start()
+
+        contunuous_scheduler = CountinuousScheduler()
+        contunuous_scheduler.scheduler.start()
+
+
+

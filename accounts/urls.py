@@ -21,4 +21,5 @@ urlpatterns = [
     path('ranking/', UserRankingView.as_view(), name='ranking'),
     path('feedback/', FeedbackListCreateView.as_view(), name='FeedbackListCreateView'),
     path('continuous/', ContinuousView.as_view(), name='ContinuousView'),
+    path('croncontinuous/', CronContinuousView.as_view(), name='CronContinuousView'),
 ]
