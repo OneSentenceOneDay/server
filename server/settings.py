@@ -32,7 +32,10 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8000",
     "https://osod.swygbro.com",
 ]
-
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
