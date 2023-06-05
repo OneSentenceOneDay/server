@@ -101,7 +101,6 @@ class CustomLoginView(LoginView):
                 key='refresh_token',
                 value=str(self.refresh_token),
                 expires=refresh_token_expiration,
-                httponly=True,
                 secure=True,
             )
         response.delete_cookie('sessionid')
@@ -203,7 +202,7 @@ class GetGoogleAccessView(APIView):
             accept_json = accept.json()
             refresh_token = accept_json.get('refresh_token')
             response = Response(accept_json)
-            response.set_cookie(key='refresh_token', value=refresh_token, httponly=True)
+            response.set_cookie(key='refresh_token', value=refresh_token)
             return response
         
         except User.DoesNotExist:
