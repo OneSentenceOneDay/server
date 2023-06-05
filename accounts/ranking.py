@@ -14,7 +14,11 @@ class LikeRankingVIew(APIView):
         today = datetime.today()
         start_of_week = today - timedelta(days=today.weekday())
         end_of_week = start_of_week + timedelta(days=6)
-        top_users = Post.objects.filter(created_at__range=[start_of_week.date(), end_of_week.date()]).values('user').annotate(total_likes=Count('like_users')).order_by('-total_likes').values('total_likes','user__nickname')
+        top_users = Post.objects.filter(created_at__range=[start_of_week.date(), end_of_week.date()])\
+            .values('user')\
+            .annotate(total_likes=Count('like_users'))\
+            .order_by('-total_likes')\
+            .values('total_likes','user__nickname')
 
         return Response({'ranking': list(top_users)}, status=status.HTTP_200_OK)
 
