@@ -157,7 +157,7 @@ class WeekIsWritingView(APIView):
         user = self.request.user
         result = {str((start_of_week + timedelta(days=i)).date()): 0 for i in range(7)}
         
-        post_dates = Post.objects.filter(user_id=user.id, created_at__range=[start_of_week.date(), end_of_week.date() + timedelta(days=1)]).only('created_at')
+        post_dates = Post.objects.filter(user_id=user.id, created_at__range=[start_of_week.date(), end_of_week.date()]).only('created_at')
         if post_dates.exists():
             for post in post_dates:
                 date = str(post.created_at.date())
