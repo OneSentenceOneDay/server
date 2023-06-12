@@ -217,3 +217,17 @@ class TranslateView(APIView):
         client = translate.Client()
         result = client.translate(text, target_language='ko')
         return Response({'translation': result['translatedText']}, status=status.HTTP_200_OK)
+
+class SentenceAdminView(APIView):
+    def post(self, request, *args, **kwargs):
+        today = datetime.now().date()
+        start_date = datetime(2023, 6, 5).date()  # June 5th
+        end_date = datetime(2023, 6, 12).date()  # June 11th
+
+        sentences = Sentence.objects.filter(created_at__lt=start_date) | Sentence.objects.filter(created_at__gt=end_date)
+
+        for sentence in sentences:
+            sentence.created_at = today
+            today += timedelta(days=1)
+            sentence.save(update_fields=['created_at'])
+        return Response(status=status.HTTP_200_OK)

@@ -29,4 +29,4 @@ def is_pattern_used(sentence, pattern):
     new_sentence = " ".join(token.lemma_ if token.pos_ in {"AUX", "VERB"} else token.text for token in sentence_doc)
     new_pattern = " ".join(token.lemma_ if token.pos_ in {"AUX", "VERB"} else token.text for token in pattern_doc)
 
-    return new_pattern in new_sentence
+    return pattern in new_sentence

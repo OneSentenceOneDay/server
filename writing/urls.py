@@ -32,4 +32,7 @@ urlpatterns = [
     path('mypage/userdetail/', MypageUserDetailView.as_view(), name='userdetail'),
     path('mypage/ilike/', WhatILikeView.as_view(), name='WhatILikeView'),
     path('mypage/week/', WeekIsWritingView.as_view(), name='week_is_writing'),
+
+    ##관리 함수##
+    # path('admin/changesentencedate/', SentenceAdminView.as_view(), name='SentenceAdminView'),
 ]
