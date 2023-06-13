@@ -111,10 +111,10 @@ class CheckPatternView(APIView):
     def post(self, request, *args, **kwargs):
         text = request.data.get('text')
         sentence = request.data.get("sentence")
-        if is_pattern_used(text, sentence):
-            return Response(status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # if is_pattern_used(text, sentence):
+        return Response(status=status.HTTP_200_OK)
+        # else:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class PostOrderView(ListAPIView):
     serializer_class = PostSerializer
