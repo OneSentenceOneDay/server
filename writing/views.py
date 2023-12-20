@@ -217,7 +217,8 @@ class TranslateView(APIView):
         client = translate.Client()
         result = client.translate(text, target_language='ko')
         return Response({'translation': result['translatedText']}, status=status.HTTP_200_OK)
-
+    
+########관리 관련########
 class SentenceAdminView(APIView):
     def post(self, request, *args, **kwargs):
         today = datetime.now().date()
@@ -231,3 +232,20 @@ class SentenceAdminView(APIView):
             today += timedelta(days=1)
             sentence.save(update_fields=['created_at'])
         return Response(status=status.HTTP_200_OK)
+
+class MakeSentenceView(APIView):
+    def post(self, request, *args, **kwargs):
+        past_sentences = Sentence.objects.all()
+        today = datetime.now().date()
+        
+        for i, past_sentence in enumerate(past_sentences, start=1):
+            new_sentence = Sentence(
+                                sentence=past_sentence.sentence,
+                                discription=past_sentence.discription,
+                                translate=past_sentence.translate,
+                                korean=past_sentence.korean
+                                )
+            
+            new_sentence.created_at=today + timedelta(days=i)
+            new_sentence.save()
+        return Response({"message": "Sentences created successfully."}, status=200)

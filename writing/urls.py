@@ -34,5 +34,6 @@ urlpatterns = [
     path('mypage/week/', WeekIsWritingView.as_view(), name='week_is_writing'),
 
     ##관리 함수##
-    # path('admin/changesentencedate/', SentenceAdminView.as_view(), name='SentenceAdminView'),
+    path('admin/changesentencedate/', SentenceAdminView.as_view(), name='SentenceAdminView'),
+    path('admin/makesentence/', MakeSentenceView.as_view(), name='MakeSentenceView'),
 ]
