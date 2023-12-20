@@ -110,7 +110,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
+import pymysql
 
+pymysql.install_as_MySQLdb()
 
 DATABASES = {
     'default': {

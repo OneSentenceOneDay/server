@@ -201,11 +201,7 @@ class MainSentenceView(ListAPIView):
 
     
 ########번역 관련########
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/app/innate-vigil-377910-ff58e0aebf0f.json'
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/leehyunje/Postman/OSOD/server/innate-vigil-377910-ff58e0aebf0f.json'
-
-
-from google.auth.credentials import Credentials
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/code/innate-vigil-377910-ff58e0aebf0f.json'
 
 
 class TranslateView(APIView):
@@ -213,7 +209,6 @@ class TranslateView(APIView):
         text = request.data.get('text')
         if not text:
             return Response({'translation': "번역할 문장이 없어요!"}, status=status.HTTP_200_OK)
-        #client = translate.Client()
         client = translate.Client()
         result = client.translate(text, target_language='ko')
         return Response({'translation': result['translatedText']}, status=status.HTTP_200_OK)

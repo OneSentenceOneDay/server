@@ -1,0 +1,23 @@
+version: '3'
+services:
+  nginx:
+    build: ./config/nginx
+    ports:
+      - "80:80"
+    image: 194090117207.dkr.ecr.ap-northeast-2.amazonaws.com/osod-nginx:latest
+    depends_on:
+      - web
+    platform: linux/amd64
+  web:
+    build:
+      context: .
+      dockerfile: ./config/web/Dockerfile
+    volumes:
+      - ./:/code
+    command: ["./start.sh"]
+    ports:
+      - "8000:8000"
+    platform: linux/amd64
+    image: 194090117207.dkr.ecr.ap-northeast-2.amazonaws.com/osod-web:latest
+    env_file:
+      - .env
