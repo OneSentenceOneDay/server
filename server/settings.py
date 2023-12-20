@@ -23,19 +23,9 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://port-0-osod-108dypx2ale9l8kjq.sel3.cloudtype.app', 'http://localhost:3000', 'https://osod.swygbro.com']
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://osod.swygbro.com"]
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
-    "https://osod.swygbro.com",
-]
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'https://osod.swygbro.com']
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://osod.swygbro.com", "https://osod.site"]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
