@@ -4,6 +4,8 @@ from decouple import config, AutoConfig
 import openai
 from rest_framework import status
 import random
+import urllib.request
+import json
 
 def grammar_wrong_response():
     a = random.randrange(0,4)
@@ -17,26 +19,34 @@ def grammar_correct_response():
 
 class GrammarCheckView(APIView):
     def post(self, request):
-        openai.api_key = config('OPEN_AI')
+        api_key = config('OPEN_AI')
         text = request.data.get('text')
         sentence = request.data.get('sentence')
         if not text:
             return Response({'response': "", 'ai': "검사할 문장이 없어요!", 'original': "", 'bool': False}, status=status.HTTP_400_BAD_REQUEST)
         
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            #prompt=f"'{text}' correct if grammar wrong. ",
-            prompt=f"'{text}' correct grammar if wrong. Preserve contain '{sentence}' ",
-            temperature=0,
-            max_tokens=60,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0
+        data = {
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+            {"role": "system", "content": f"'{text}'문장이 문법적으로 틀렸으면 고쳐줘. '{sentence}'는 포함해야돼. "}, #역할 지정
+        ]
+        }
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {api_key}'
+        }
+        request = urllib.request.Request(
+            'https://api.openai.com/v1/chat/completions',
+            data=json.dumps(data).encode('utf-8'),
+            headers=headers,
+            method='POST'
         )
+        with urllib.request.urlopen(request) as response:
+            response = json.loads(response.read().decode('utf-8'))
         #return Response({'response': response, 'today': today_sentence}, status=status.HTTP_200_OK)
-        target_res = response.choices[0].text.strip()
-        if target_res[0] == "\"":
-            cut_target = target_res.strip("\"")
+        target_res = response['choices'][0]['message']['content'].strip()
+        if target_res[0] in ("\'", "\""):
+            cut_target = target_res.strip("\'\"")
             if text == cut_target:
                 res = cut_target
                 ai = grammar_correct_response()
@@ -55,10 +65,5 @@ class GrammarCheckView(APIView):
                 res = target_res
                 ai = grammar_wrong_response()
                 bool = False
-
-        # if text == response.choices[0].text.strip():
-        #     res = response.choices[0].text.strip()
-        #     ai = grammar_correct_response()
-        #     bool = True
 
         return Response({'response': res, 'ai': ai, 'original': text, 'bool': bool}, status=status.HTTP_200_OK)
